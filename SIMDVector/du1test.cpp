@@ -8,7 +8,7 @@
 #include <iostream>
 #include <chrono>
 
-/*
+
 
 namespace du1simd {
 
@@ -233,12 +233,11 @@ namespace du1example {
 	}
 };
 
-*/
 
-/*
+
 int main(int argc, char* *argv)
 {
 	du1example::test();
 	return 0;
 }
-*/
+
