@@ -8,6 +8,8 @@
 #include <iostream>
 #include <chrono>
 
+/*
+
 namespace du1simd {
 
 	template< typename value_type, typename simd_carrier_type> 
@@ -231,9 +233,12 @@ namespace du1example {
 	}
 };
 
+*/
+
+/*
 int main(int argc, char* *argv)
 {
 	du1example::test();
 	return 0;
 }
-
+*/
