@@ -8,6 +8,7 @@
 #include <iostream>
 #include <chrono>
 
+#include <cstdint>
 
 
 namespace du1simd {
@@ -234,9 +235,77 @@ namespace du1example {
 };
 
 
+void iterator_test() {
+	simd_vector<uint8_t, uint32_t> my_vector(20);
+	char i = 0;
+	for (auto it = my_vector.begin(); it != my_vector.end(); it++)
+	{
+		(*it) = i++;
+	}
+	
+	simd_vector<uint8_t, uint32_t>::iterator::difference_type dif = (my_vector.end() - my_vector.begin());
+	std::cout << dif << std::endl;
+
+	simd_vector<uint8_t, uint32_t>::iterator my_it = my_vector.begin();
+
+	simd_vector<uint8_t, uint32_t>::simd_iterator my_simd_it = my_it.lower_block();
+	simd_vector<uint8_t, uint32_t>::simd_iterator end = my_vector.end().lower_block();
+
+	std::cout << (my_simd_it < end) << std::endl;
+
+	std::cout << std::hex << my_simd_it[0] << std::endl;
+	std::cout << std::hex << my_simd_it[1] << std::endl;
+
+	for (auto it = my_simd_it; it != end; it++)
+	{
+		std::cout << std::hex << it[0] << std::endl;
+	}
+
+	my_simd_it[0] = 0x05050505;
+
+	for (auto it = my_vector.begin(); it != my_vector.end(); it++)
+	{
+		std::cout << std::dec << (uint32_t)it[0] << std::endl;
+	}
+
+	simd_vector<uint8_t, uint32_t>::iterator other_it;
+
+	other_it = my_it + 5;
+
+	std::cout << (uint32_t)my_it[0] << std::endl;
+	std::cout << (uint32_t)(*other_it) << std::endl;
+
+	(*other_it) = 55;
+	std::cout << (uint32_t)my_it[5] << std::endl;
+}
+
+// 8B structure
+struct s1 
+{
+	uint32_t first;
+	uint32_t second;
+};
+
+// 12B structure
+struct s2
+{
+	uint32_t first;
+	uint32_t second;
+	uint32_t third;
+};
+
+// Uncomment following function to test static assertion
+/*
+void static_assert_test()
+{
+	simd_vector<s1, s2> my_vector(3);
+
+}
+*/
 
 int main(int argc, char* *argv)
 {
+	iterator_test();
 	du1example::test();
 	return 0;
 }
