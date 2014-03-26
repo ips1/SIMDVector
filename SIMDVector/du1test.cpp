@@ -3,6 +3,7 @@
 #include <memory>
 #include <algorithm>
 #include <xmmintrin.h>
+#include <pmmintrin.h>
 #include <cassert>
 #include <string>
 #include <iostream>
@@ -201,7 +202,14 @@ namespace du1example {
 			vector_type vec( K3);
 
 			float gen = X1;
-
+			/*
+			long long i = 0;
+			for (auto it = vec.begin(); it != vec.end(); it++) {
+				i++;
+				if (i % 1000 == 0) std::cout << i << std::endl;
+				(*it) = 15;
+			}
+			*/
 			std::generate( vec.begin(), vec.end(), [ & gen, X2](){
 				return gen += X2;
 			});
@@ -234,9 +242,17 @@ namespace du1example {
 	}
 };
 
+simd_vector<uint8_t, uint32_t> make_vector(std::size_t size)
+{
+	return simd_vector<uint8_t, uint32_t>(size);
+}
 
 void iterator_test() {
 	simd_vector<uint8_t, uint32_t> my_vector(20);
+	simd_vector<uint8_t, uint32_t> my_new_vector = make_vector(20);
+
+	my_vector = std::move(my_new_vector);
+
 	char i = 0;
 	for (auto it = my_vector.begin(); it != my_vector.end(); it++)
 	{
